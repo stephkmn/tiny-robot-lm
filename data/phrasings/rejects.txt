@@ -1,0 +1,2 @@
+# Paste bad phrasings here, one per line, exactly as in review/.
+# Lines starting with # are ignored.

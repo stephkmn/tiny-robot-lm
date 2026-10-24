@@ -5,3 +5,4 @@ data/out/
 
 # training data generation
 data/generate_phrasings.py
+data/phrasings/review/
