@@ -4,4 +4,4 @@ __pycache__/
 data/out/
 
 # training data generation
-data/generate_phrasings.py
+data/generate_phrasings.pydata/phrasings/review/
