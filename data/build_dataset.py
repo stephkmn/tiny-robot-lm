@@ -79,6 +79,9 @@ LABELS = {
     "UNKNOWN":        lambda v: "UNKNOWN",
 }
 
+# TURN_PLAIN phrasings that say spin/twirl/whirl get LEFT 360 instead of LEFT 90.
+SPIN_RE = re.compile(r"\b(spin|spinning|spins|twirl\w*|whirl\w*)\b", re.I)
+
 MOVE_INTENTS = [i for i in SLOTS if i not in
                 ("WATCH_LEAD", "WATCH_TRAIL", "CONNECTOR", "STOP", "UNKNOWN")]
 OBJ_INTENTS = ["FWD_UNTIL", "SEARCH"]
@@ -259,6 +262,8 @@ def fill(template, intent, unknown_obj=False):
     text = fix_articles(text)
     if unknown_obj:
         return text, "UNKNOWN"
+    if intent == "TURN_PLAIN" and SPIN_RE.search(template):
+        return text, "LEFT 360"       # "spin" with no amount means all the way around
     return text, LABELS[intent](values)
 
 
