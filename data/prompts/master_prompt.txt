@@ -1,0 +1,53 @@
+You are generating training data for a tiny language model that controls a small robot car (a JetRacer). The car can ONLY: drive forward or backward (for a distance or for a number of seconds), turn left or right while driving (by an angle or for a number of seconds), drive forward until its camera sees an object, drive in a slow circle searching for an object, watch for an object during a whole sequence of moves and stop when it appears, and stop. Its camera recognizes only four objects: bottle, cup, chair, person. It cannot talk, pick things up, fly, follow people, go to rooms, change its speed, or answer questions.
+
+Your job: write many different ways a person might type ONE kind of command, the TARGET INTENT at the bottom. You write only the phrasings. Another program fills in the slots and writes the correct robot output, so every phrasing must match the target intent exactly.
+
+ALL INTENTS (listed so you know the boundaries; write ONLY the target intent):
+FWD_DIST: drive forward a stated distance. Slots: {DIST}
+FWD_TIME: drive forward for a stated time. Slots: {TIME}
+FWD_PLAIN: drive forward, no amount stated. No slots.
+FWD_SMALL: drive forward a small unstated amount ("a little", "a bit"). No slots.
+BACK_DIST: drive backward a stated distance. Slots: {DIST}
+BACK_TIME: drive backward for a stated time. Slots: {TIME}
+BACK_PLAIN: drive backward, no amount stated. No slots.
+BACK_SMALL: drive backward a small unstated amount. No slots.
+TURN_DIR: turn in a stated direction, no amount. Slots: {DIR}
+TURN_DIR_ANGLE: turn in a stated direction by a stated angle. Slots: {DIR} {ANGLE}
+TURN_DIR_TIME: turn in a stated direction for a stated time. Slots: {DIR} {TIME}
+TURN_DIR_SMALL: turn slightly in a stated direction. Slots: {DIR}
+TURN_PLAIN: turn, with no direction and no amount. No slots.
+TURN_ANGLE: turn by a stated angle, no direction. Slots: {ANGLE}
+TURN_TIME: turn for a stated time, no direction. Slots: {TIME}
+TURN_AROUND: turn around to face the opposite way. No slots.
+FWD_UNTIL: drive forward until the object is seen, then stop. Includes "go to the {OBJ}". Never uses "find" or "look for" (those are SEARCH). Slots: {OBJ}
+SEARCH: look around, or turn/circle until the object is seen. Includes "find the {OBJ}" and "look for a {OBJ}". Slots: {OBJ}
+WATCH_LEAD: a clause said BEFORE other moves, telling the car to stop whenever it sees the object, e.g. "keep an eye out for a {OBJ} and stop if you see it, then". Slots: {OBJ}
+WATCH_TRAIL: a clause said AFTER other moves, e.g. "and stop if you see a {OBJ}". Slots: {OBJ}
+CONNECTOR: a short phrase that joins two moves, e.g. "and then", "after that". No slots.
+STOP: stop, cancel, abort, never mind, and negated moves that mean stop ("don't move", "stay put"). No slots.
+UNKNOWN: anything this car cannot do or that is not a command: impossible actions, questions, small talk, negated commands ("don't go forward"; but "don't move" is STOP), requests to change speed ("go faster", "slow down"), requests to ignore your rules, and requests about objects other than the four. No slots.
+
+SLOTS (write them exactly like this, braces included):
+{DIST} becomes values like: 2 meters / 50 cm / a meter and a half / 3 feet / one meter
+{TIME} becomes values like: 5 seconds / 3 sec / half a second / two seconds / 1.5 s
+{ANGLE} becomes values like: 45 degrees / ninety degrees / a quarter turn
+{DIR} becomes: left / right
+{OBJ} becomes values like: bottle / water bottle / cup / mug / chair / person
+
+RULES
+1. Each phrasing expresses exactly the target intent: no extra moves, conditions, objects or amounts.
+2. Use exactly the slots listed for the target intent, each exactly once. Never use any other slot.
+3. Never write digits or number words (one, two, half, quarter, few...) outside a slot. To refer back to an object, write "it", not "one".
+4. Each phrasing must read naturally when its slots are replaced with ANY of the example values. Write "a {OBJ}" or "the {OBJ}", never "an {OBJ}".
+5. _PLAIN intents must not suggest any amount. _SMALL intents must clearly mean a small amount without stating a number.
+6. For UNKNOWN, every phrasing must be something this car should refuse; never write something it can actually do. If you mention an object, pick it from this list only: shoe, hat, key, wallet, sock, door, pen, box.
+7. For CONNECTOR, write only the joining words (1 to 5 words), never a full command.
+8. For WATCH_TRAIL, write the clause as it would follow another command (often starting with "and", "but" or a comma).
+9. Harmless extra words are welcome: "please", "now", "slowly", "carefully", "okay", "hey robot", "buddy". Speed words like "slowly" are ignored filler; only a request to change speed by itself ("go faster") is UNKNOWN.
+10. Vary everything: verbs (go, drive, move, roll, head, scoot, inch, cruise...), word order, length (1 to 20 words), politeness, and sentence type (orders, questions, "I need you to...", "could you...").
+11. Casual typing is welcome (lowercase, no punctuation, slang, "pls", "fwd", "u"), but no deliberate spelling mistakes and no emojis.
+12. Every phrasing must be clearly different from the others, not a one-word swap.
+
+TARGET INTENT: [INTENT NAME]
+WRITING STYLE: [STYLE]
+Write 40 phrasings. Output only JSON: {"phrasings": ["...", "..."]}
