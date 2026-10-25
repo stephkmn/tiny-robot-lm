@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiny Robot LM</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+    <header>
+        <h1>Tiny Robot LM</h1>
+        <div class="mode-switch" role="group" aria-label="Mode">
+            <button type="button" id="test-btn" class="selected">Test</button>
+            <button type="button" id="drive-btn">Drive</button>
+        </div>
+        <span class="status"><span class="dot" id="status-dot"></span><span id="status-text">Connecting…</span></span>
+    </header>
+
+    <section class="card">
+        <label for="cmd-input">Instruction:</label>
+        <form class="cmd-row" id="cmd-form" autocomplete="off">
+            <input type="text" id="cmd-input" name="instruction" maxlength="200"
+                   placeholder="e.g. go forward until you see a bottle">
+            <button type="submit" class="main-btn" id="send-btn">Send</button>
+            <button type="button" id="stop-btn" aria-label="Stop the robot">STOP</button>
+        </form>
+        <div class="note" id="mode-note">Test mode: shows what the model outputs. The robot does not move.</div>
+    </section>
+
+    <div class="two-col">
+        <section class="card">
+            <h2>Last command</h2>
+            <dl class="info">
+                <dt>Your input</dt><dd id="last-typed">none</dd>
+                <dt>Model saw</dt><dd id="last-seen">none</dd>
+                <dt>Model output</dt><dd><div class="tags" id="last-output">none</div></dd>
+                <dt>Model time</dt><dd id="last-time">none</dd>
+                <dt>Result</dt><dd id="last-result">none</dd>
+            </dl>
+        </section>
+        <section class="card">
+            <h2>Robot status</h2>
+            <dl class="info">
+                <dt>State</dt><dd id="robot-state">Idle</dd>
+                <dt>Plan</dt><dd><div class="tags" id="robot-plan">none</div></dd>
+                <dt>Watching for</dt><dd id="robot-watch">none</dd>
+                <dt>Camera sees</dt><dd id="robot-sees">none</dd>
+                <dt>Motors</dt><dd id="robot-motors">throttle 0, steering 0</dd>
+            </dl>
+        </section>
+    </div>
+
+    <section class="card">
+        <div class="list-header">
+            <h2>Live events</h2>
+            <label><input type="checkbox" id="motor-check"> motor updates</label>
+            <button type="button" id="clear-btn">Clear</button>
+        </div>
+        <div id="event-list" aria-live="polite"></div>
+    </section>
+</main>
+
+</body>
+</html>
